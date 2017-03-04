@@ -9,14 +9,41 @@
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script>
       // YOU DO NOT NEED TO EDIT THIS CODE
-      if (!/(&|\?)username=/.test(window.location.search)) {
-        var newSearch = window.location.search;
-        if (newSearch !== '' & newSearch !== '?') {
-          newSearch += '&';
+      var startingFunction = function(cb) {
+
+        if (!/(&|\?)username=/.test(window.location.search)) {
+          var newSearch = window.location.search;
+          if (newSearch !== '' & newSearch !== '?') {
+            newSearch += '&';
+          }
+          newSearch += 'username=' + prompt('What is your name?') || 'anonymous';
+          window.location.search = newSearch;
+          cb(window.location.search.slice(10));
         }
-        newSearch += 'username=' + prompt('What is your name?') || 'anonymous';
-        window.location.search = newSearch;
-      }
+      };
+
+      var sendUsername = function(windowUsername) {
+        $.ajax({
+          // This is the url you should use to communicate with the parse API server.
+          url: 'http://127.0.0.1:3000/classes/users',
+          type: 'POST',
+          data: JSON.stringify({username: windowUsername}),
+          contentType: 'application/json',
+          success: function (data) {
+            console.log('username sent');
+          },
+          error: function (data) {
+            // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
+            console.error('send username fail', data);
+          }
+        });
+      };
+
+      // startingFunction(function(data) {
+      //   sendUsername(data);
+      // });
+
+
     </script>
     <!-- your scripts -->
     <!-- <script src="env/config.js"></script> -->
@@ -36,9 +63,14 @@
       <button class="submit">Submit</button> -->
     </div>
       <section id="chats"> 
-      <form>
+      <form id="usernameform">
+        <label for="user">User Name</label>
+        <input id="user" class='usertextbox' type = "text">
+        <input class="usersubmit" type= "submit">
+      </form>
+      <form id="msgform">
         <input class='textbox' type = "text">
-        <input class="submit" type= "submit">
+        <input class="msgsubmit" type= "submit">
       </form>
       <h1> Messages </h1>
       </section>

@@ -1,7 +1,7 @@
 // YOUR CODE HERE:
 var app = {
   message: {
-    username: window.username,
+    username: null,
     text: null,
     roomname: null
   },
@@ -15,10 +15,16 @@ $(document).ready(function() {
 
     $('body').on('click', '.username', function(e) {
       e.preventDefault();
-      console.log('username');
       app.handleUsernameClick(e);
     });
-    $('form').on('submit', function(e) {
+    $('#usernameform').on('click', '.usersubmit', function(e) {
+      e.preventDefault();
+      var userText = $('.usertextbox').val();
+      app.message.username = userText;
+      app.sendUsername(userText);
+      $('.usertextbox').val('');
+    });
+    $('form').on('click', '.msgsubmit', function(e) {
       e.preventDefault();
       app.handleSubmit();
       $('.textbox').val('');
@@ -51,7 +57,23 @@ app.send = function(message) {
       console.error('chatterbox: Failed to send message', data);
     }
   });
-
+};
+app.sendUsername = function(userName) {
+  console.log('in sendUserName');
+  $.ajax({
+    // This is the url you should use to communicate with the parse API server.
+    url: 'http://127.0.0.1:3000/classes/users',
+    type: 'POST',
+    data: JSON.stringify({'username': userName}),
+    contentType: 'application/json',
+    success: function (data) {
+      console.log('username sent');
+    },
+    error: function (data) {
+      // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
+      console.error('send username fail', data);
+    }
+  });
 };
 app.handleUsernameClick = function(e) { 
   var newFriend = $(e.target).text();
@@ -61,7 +83,7 @@ app.handleUsernameClick = function(e) {
 app.handleSubmit = function() {
   //configure the message
   app.message.text = $('.textbox').val();
-  app.message.username = window.location.search.slice(10);
+  // app.message.username = 'Raffy'; //window.location.search.slice(10);
   app.message.roomname = $('#roomSelect option:selected').text();
   app.send(app.message);
 
