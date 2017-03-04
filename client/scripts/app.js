@@ -76,22 +76,24 @@ app.fetch = function() {
     contentType: 'application/json',
     success: function (rawData) {
       var data = JSON.parse(rawData);
+      console.log(data);
       newMessages = [];
       data.results.forEach(function(value) {
         newMessages.push(value);
       });
-      $('#chats').children('.message').remove();
+      // $('#chats').children('.message').remove();
+      // app.clearMessages();
       newMessages.forEach(function(value) {
-        if (value.roomname === $('#roomSelect option:selected').text()) {
+        if (value.room === $('#roomSelect option:selected').text()) {
           app.renderMessage(value);
         }
       });
 
       data.results.forEach(function(value) {
-        var roomname = _escape(value.roomname);
-        if (app.rooms.indexOf(value.roomname) === -1) {
-          app.rooms.push(value.roomname);
-          app.renderRoom(value.roomname);
+        var roomname = _escape(value.room);
+        if (app.rooms.indexOf(value.room) === -1) {
+          app.rooms.push(value.room);
+          app.renderRoom(value.room);
         }
       });
       
@@ -105,7 +107,7 @@ app.fetch = function() {
 
 app.clearMessages = function() {
   $('#chats').empty();
-
+  console.log('clear message was invoked');
 };
 
 var htmlEscapes = {
@@ -126,7 +128,7 @@ var _escape = function(string) {
 
 app.renderMessage = function(message) {
   var username = _escape(message.username);
-  var text = _escape(message.text);
+  var text = _escape(message.message);
 
   if (app.friends.indexOf(message.username) > -1) {
     $('#chats').append(`<section class="message"><h3><a class="username" href="#">${username}</a></h3> <div><b>${text}</b></div></section>`);

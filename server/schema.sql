@@ -91,5 +91,5 @@ ALTER TABLE `Msg_Table` ADD FOREIGN KEY (id_Room_Table) REFERENCES `Room_Table` 
 -- ('','');
 -- INSERT INTO `Msg_Table` (`id`,`Message`,`Time`,`id_Users_Table`,`id_Room_Table`) VALUES
 -- ('','','','','');
--- INSERT INTO `Room_Table` (`id`,`Room_Name`) VALUES
+-- Ro
 -- ('','');

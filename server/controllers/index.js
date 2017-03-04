@@ -1,17 +1,25 @@
 var models = require('../models');
 var express = require('express');
 
-var storage = {results: []};
+var storage = {};
 
 module.exports = {
   messages: {
     get: function (req, res) {
-      models.users.get();
-      res.end(JSON.stringify(storage));
+      models.messages.get(function(messages) {
+        storage.results = messages;
+        res.end(JSON.stringify(storage));
+      });
+      //models.users.get(1, function(data) {
+        // console.log(data);
+      // });
     }, // a function which handles a get request for all messages
     post: function (req, res) { 
+      //models.messages.post();
       var messages = req.body;
-      storage.results.push(messages);
+      console.log(messages);
+      //storage.results.push(messages);
+      models.messages.post(messages);
       res.end(JSON.stringify(messages));
     } // a function which handles posting a message to the database
   },
