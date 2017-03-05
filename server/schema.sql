@@ -28,26 +28,26 @@ USE chat;
 
 -- ---
 -- Table 'Users_Table'
--- 
+--
 -- ---
 
 DROP TABLE IF EXISTS `Users_Table`;
-    
+
 CREATE TABLE `Users_Table` (
-  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `id` INTEGER NOT NULL AUTO_INCREMENT,
   `User_Name` VARCHAR(20) NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 );
 
 -- ---
 -- Table 'Msg_Table'
--- 
+--
 -- ---
 
 DROP TABLE IF EXISTS `Msg_Table`;
-    
+
 CREATE TABLE `Msg_Table` (
-  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `id` INTEGER NOT NULL AUTO_INCREMENT,
   `Message` VARCHAR(140) NULL DEFAULT NULL,
   `Time` DATETIME(6) NULL DEFAULT NULL,
   `id_Users_Table` INTEGER NULL DEFAULT NULL,
@@ -57,19 +57,19 @@ CREATE TABLE `Msg_Table` (
 
 -- ---
 -- Table 'Room_Table'
--- 
+--
 -- ---
 
 DROP TABLE IF EXISTS `Room_Table`;
-    
+
 CREATE TABLE `Room_Table` (
-  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `id` INTEGER NOT NULL AUTO_INCREMENT,
   `Room_Name` VARCHAR(10) NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 );
 
 -- ---
--- Foreign Keys 
+-- Foreign Keys
 -- ---
 
 ALTER TABLE `Msg_Table` ADD FOREIGN KEY (id_Users_Table) REFERENCES `Users_Table` (`id`);
